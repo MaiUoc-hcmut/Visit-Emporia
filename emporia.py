@@ -16,6 +16,7 @@ def readInput():
 
 
 class Emporia():
+    #Init attribute
     def __init__(self, matrix, rows, cols):
         self.matrix = matrix
         self.rows = rows
@@ -27,6 +28,7 @@ class Emporia():
         self.empty = 0
         self.result = 0
     
+    #Determine the source and destination of matrix
     def determineParameter(self):
         for r in self.matrix:
 
@@ -40,13 +42,14 @@ class Emporia():
                 elif ele == 0:
                     self.empty += 1
 
+    #Check the position that possible to traverse or not
     def checkPossiblePosition(self, r, c):
         if r < self.rows and c < self.cols and r >= 0 and c >= 0 and (self.matrix[r][c] == 0 or self.matrix[r][c] == 3):
             return True
         
         return False
 
-    #This method check 
+    
     def isVisitedAll(self):
         for r in self.matrix:
             for c in r:
@@ -55,7 +58,10 @@ class Emporia():
         
         return True
 
-    def findPath(self, r, c, path):
+    
+    # r for index of row of current position
+    # c for index of column of current position
+    def findPath(self, r, c):
 
         #Chek if current position is at the destination and visited all the cells in matrix
         if r == self.desX and c == self.desY and self.isVisitedAll():
@@ -70,20 +76,21 @@ class Emporia():
         #Traverse and backtrack
         #Move down
         if self.checkPossiblePosition(r + 1, c) == True:
-            self.findPath(r + 1, c, path)
+            self.findPath(r + 1, c)
 
         #Move up
         if self.checkPossiblePosition(r - 1, c) == True:
-            self.findPath(r - 1, c, path)
+            self.findPath(r - 1, c)
 
         #Move right
         if self.checkPossiblePosition(r, c + 1) == True:
-            self.findPath(r, c + 1, path)
+            self.findPath(r, c + 1)
 
         #Move left
         if self.checkPossiblePosition(r, c - 1) == True:
-            self.findPath(r, c - 1, path)
+            self.findPath(r, c - 1)
 
+        #Before back to previous position, mark current position as not visited yet
         if self.matrix[r][c] != 3:
             self.matrix[r][c] = 0
 
@@ -97,9 +104,10 @@ class Emporia():
 
 matrix, rows, cols = readInput()
 test = Emporia(matrix, rows, cols)
-path = []
 test.determineParameter()
 sourceX = test.sourceX
 sourceY = test.sourceY
-test.findPath(sourceX, sourceY, path)
+test.findPath(sourceX, sourceY)
 print(test.result)
+
+
